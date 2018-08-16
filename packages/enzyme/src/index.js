@@ -6,6 +6,7 @@ import mount from './mount';
 import shallow from './shallow';
 import render from './render';
 import { merge as configure } from './configuration';
+import { unmountAllWrappers } from './wrapperSandbox';
 
 module.exports = {
   render,
@@ -15,4 +16,5 @@ module.exports = {
   ReactWrapper,
   configure,
   EnzymeAdapter,
+  unmountAllWrappers,
 };

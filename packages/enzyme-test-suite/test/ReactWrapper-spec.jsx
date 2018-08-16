@@ -15,6 +15,7 @@ import {
   sym,
 } from 'enzyme/build/Utils';
 import getAdapter from 'enzyme/build/getAdapter';
+import * as wrapperSandbox from 'enzyme/build/wrapperSandbox';
 
 import './_helpers/setupAdapters';
 import {
@@ -79,6 +80,15 @@ describeWithDOM('mount', () => {
       const spy = sinon.spy();
       mount(<div ref={spy} />);
       expect(spy).to.have.property('callCount', 1);
+    });
+
+    it('should call trackWrapper', () => {
+      const spy = sinon.spy();
+      const originalTrackWrapper = wrapperSandbox.trackWrapper;
+      wrapperSandbox.trackWrapper = spy;
+      mount(<p>foo</p>);
+      expect(spy).to.have.property('callCount', 1);
+      wrapperSandbox.trackWrapper = originalTrackWrapper;
     });
   });
 

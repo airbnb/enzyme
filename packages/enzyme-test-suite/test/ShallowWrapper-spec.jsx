@@ -15,6 +15,7 @@ import {
   sym,
 } from 'enzyme/build/Utils';
 import getAdapter from 'enzyme/build/getAdapter';
+import * as wrapperSandbox from 'enzyme/build/wrapperSandbox';
 
 import './_helpers/setupAdapters';
 import {
@@ -75,6 +76,15 @@ describe('shallow', () => {
       expect(wrapper.find(Box).children().props().className).to.equal('div');
       expect(wrapper.children().type()).to.equal('div');
       expect(wrapper.children().props().bam).to.equal(undefined);
+    });
+
+    it('should call trackWrapper', () => {
+      const spy = sinon.spy();
+      const originalTrackWrapper = wrapperSandbox.trackWrapper;
+      wrapperSandbox.trackWrapper = spy;
+      shallow(<p>foo</p>);
+      expect(spy).to.have.property('callCount', 1);
+      wrapperSandbox.trackWrapper = originalTrackWrapper;
     });
   });
 
