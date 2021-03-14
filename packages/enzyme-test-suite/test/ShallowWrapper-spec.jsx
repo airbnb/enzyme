@@ -679,6 +679,15 @@ describe('shallow', () => {
           }
         }
 
+        class WrappingComponent extends React.Component {
+          render() {
+            const { children } = this.props;
+            return (
+              <Provider value="foo">{ children }</Provider>
+            );
+          }
+        }
+
         class InnerComponent extends React.Component {
           render() {
             return this.context;
@@ -692,6 +701,11 @@ describe('shallow', () => {
           const provides = wrapper.find(Provider).dive();
           const provider = provides.find(InnerComponent).shallow();
           expect(provider.text()).to.equal('foo');
+        });
+
+        it('works with wrappingComponent', () => {
+          const wrapper = shallow(<InnerComponent />, { wrappingComponent: WrappingComponent });
+          expect(wrapper.text()).to.equal('foo');
         });
       });
     });
